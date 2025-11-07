@@ -1,34 +1,46 @@
 ---
-import astroLogo from '../assets/astro.svg';
-import background from '../assets/background.svg';
+import name from '../assets/name.svg';
 ---
 
 <div id="container" class="w-dvw h-dvh">
-	<div id="content-container" class="w-full h-full flex flex-col">
-		<div id="top" class="w-full min-h-16 grow-3 bg-red-500 flex flex-row">
-			<div id="top-left" class="h-full min-w-12">
+	<div id="content-container" class="h-full w-full flex flex-col border-x">
+		<div id="top" class="w-full min-h-16 grow-2 flex flex-row">
+			<div id="top-left-spacer" class="h-full w-[0.5px]"/>
+			<div id="top-left" class=" w-full h-full min-w-12 border-r box-content">
 
 			</div>
-			<div id="top-center h-full grow">
+			<div id="top-center" class="h-full grow border-r">
 
 			</div>
-			<div id="top-right">
-
+			<div id="top-right" class="h-full flex flex-col">
+				<div id="menubar" class="w-full h-16 w-fit border-b flex">
+					<div class="h-full aspect-square"/>
+					<div class="h-full flex items-center justify-center w-max"><a href="#" class="font-mono text-xl font-light">EDUCATION</a></div>
+					<div class="h-full aspect-square"/>
+					<div class="h-full flex items-center justify-center w-max"><a href="#" class="font-mono text-xl font-light">SKILLS</a></div>
+					<div class="h-full aspect-square"/>
+					<div class="h-full flex items-center justify-center w-max"><a href="#" class="font-mono text-xl font-light">LEADERSHIP / EXPERIENCE</a></div>
+					<div class="h-full aspect-square"/>
+					<div class="h-full flex items-center justify-center w-max"><a href="#" class="font-mono text-xl font-light">PROJECTS</a></div>
+					<div class="h-full aspect-square"/>
+					<div class="h-full w-32 border-l" />
+				</div>
+				<div class="grow"></div>
 			</div>
 		</div>
-		<div id="center" class="w-full h-112 bg-blue-500">
-			<div id="center-left" class="h-full min-w-12">
-
+		<div id="center" class="w-full h-96 max-h-fit flex">
+			<div id="center-left" class="h-full min-w-12  grow-2 flex border-y">
+				<div class="h-241/471 w-full border-b"/>
 			</div>
-			<div>
-
+			<div id="center-center" class="h-full">
+				<img src={name.src} alt="Torsten Young" class="h-full w-full" />
 			</div>
+			<div class="grow-7"/>
 		</div>
-		<div id="bottom" class="w-full min-h-20 grow-2 bg-green-500">
+		<div id="bottom" class="w-full min-h-20 grow-2">
 
 		</div>
 	</div>
-	
 </div>
 
 <style>
