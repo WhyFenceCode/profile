@@ -2,7 +2,7 @@
 import name from '../assets/name.svg';
 ---
 
-<div id="container" class="w-dvw h-dvh">
+<div id="container" class="w-dvw h-dvh relative">
 	<div id="content-container" class="h-full w-full flex flex-col border-x">
 		<div id="top" class="w-full min-h-16 grow-2 flex flex-row">
 			<div id="top-left-spacer" class="h-full w-[0.5px]"/>
@@ -33,14 +33,48 @@ import name from '../assets/name.svg';
 				<div class="h-241/471 w-full border-b"/>
 			</div>
 			<div id="center-center" class="h-full">
-				<img src={name.src} alt="Torsten Young" class="h-full w-full" />
+				<img id="line-1-1" src={name.src} alt="Torsten Young" class="h-full w-full" />
 			</div>
 			<div class="grow-7"/>
 		</div>
-		<div id="bottom" class="w-full min-h-20 grow-2">
-
+		<div id="bottom" class="w-full min-h-20 grow-2 flex">
+			<div class="grow-3"/>
+			<div class="h-full w-fit flex flex-col">
+				<div class="grow" />
+				<div id="line-1-2" class="border w-70 h-16 flex items-center justify-center"><a href="#" class="font-mono text-4xl font-light">CONTACT ME</a></div>
+				<div class="grow border-r" />
+			</div>
+			<div class="grow"/>
 		</div>
 	</div>
+	<svg id="line-svg" class="absolute top-0 left-0 w-dvw h-dvh pointer-events-none -z-1">
+  		<line id="connecting-line" stroke="black" stroke-width="1" />
+	</svg>
+	<script>
+		// Draw the diagonal line, connecting name and the contact button
+		function drawLine() {
+			const div1 = document.getElementById('line-1-1');
+			const div2 = document.getElementById('line-1-2');
+			const line = document.getElementById('connecting-line');
+			
+			if (!div1 || !div2 || !line) return;
+			
+			const rect1 = div1.getBoundingClientRect();
+			const rect2 = div2.getBoundingClientRect();
+			
+			const x1 = rect1.right;
+			const y1 = rect1.bottom;
+			const x2 = rect2.right;
+			const y2 = rect2.top;
+			
+			line.setAttribute('x1', x1.toString());
+			line.setAttribute('y1', y1.toString());
+			line.setAttribute('x2', x2.toString());
+			line.setAttribute('y2', y2.toString());
+		}
+		
+		drawLine();
+		
+		window.addEventListener('resize', drawLine);
+	</script>
 </div>
-
-<style>
