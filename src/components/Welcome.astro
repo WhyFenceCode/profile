@@ -3,13 +3,10 @@ import name from '../assets/name.svg';
 ---
 
 <div id="container" class="w-dvw h-dvh relative">
-	<div id="content-container" class="h-full w-full flex flex-col border-x">
+	<div id="content-container" class="h-full w-full flex flex-col border-x border-color-white">
 		<div id="top" class="w-full min-h-16 grow-2 flex flex-row">
 			<div id="top-left-spacer" class="h-full w-[0.5px]"/>
-			<div id="top-left" class=" w-full h-full min-w-12 border-r box-content">
-
-			</div>
-			<div id="top-center" class="h-full grow border-r">
+			<div id="top-left" class="h-full grow border-r">
 
 			</div>
 			<div id="top-right" class="h-full flex flex-col">
@@ -33,7 +30,7 @@ import name from '../assets/name.svg';
 				<div class="h-241/471 w-full border-b"/>
 			</div>
 			<div id="center-center" class="h-full">
-				<img id="line-1-1" src={name.src} alt="Torsten Young" class="h-full w-full" />
+				<img id="name-image" src={name.src} alt="Torsten Young" class="h-full w-full pointer-events-none" />
 			</div>
 			<div class="grow-7"/>
 		</div>
@@ -44,18 +41,25 @@ import name from '../assets/name.svg';
 				<div id="line-1-2" class="border w-70 h-16 flex items-center justify-center"><a href="#" class="font-mono text-4xl font-light">CONTACT ME</a></div>
 				<div class="grow border-r" />
 			</div>
-			<div class="grow"/>
+			<div class="grow h-full flex flex-col">
+				<div class="grow" />
+				<div class="h-16 border-t" />
+				<div class="grow" />
+			</div>
 		</div>
 	</div>
 	<svg id="line-svg" class="absolute top-0 left-0 w-dvw h-dvh pointer-events-none -z-1">
-  		<line id="connecting-line" stroke="black" stroke-width="1" />
+  		<line id="connecting-line-1" stroke="black" stroke-width="1" />
+		<line id="connecting-line-2" stroke="black" stroke-width="1" />
+		<line id="connecting-line-3" stroke="black" stroke-width="1" />
+		<line id="connecting-line-4" stroke="black" stroke-width="1" />
 	</svg>
 	<script>
 		// Draw the diagonal line, connecting name and the contact button
-		function drawLine() {
-			const div1 = document.getElementById('line-1-1');
+		function drawDiagonalLine() {
+			const div1 = document.getElementById('name-image');
 			const div2 = document.getElementById('line-1-2');
-			const line = document.getElementById('connecting-line');
+			const line = document.getElementById('connecting-line-1');
 			
 			if (!div1 || !div2 || !line) return;
 			
@@ -72,9 +76,77 @@ import name from '../assets/name.svg';
 			line.setAttribute('x2', x2.toString());
 			line.setAttribute('y2', y2.toString());
 		}
+
+		function drawTopRightLine() {
+			const div1 = document.getElementById('name-image');
+			const div2 = document.getElementById('menubar');
+			const line = document.getElementById('connecting-line-2');
+
+			if (!div1 || !div2 || !line) return;
+			
+			const rect1 = div1.getBoundingClientRect();
+			const rect2 = div2.getBoundingClientRect();
+			
+			const x1 = rect1.right;
+			const y1 = rect1.top;
+			const x2 = rect1.right;
+			const y2 = rect2.bottom;
+			
+			line.setAttribute('x1', x1.toString());
+			line.setAttribute('y1', y1.toString());
+			line.setAttribute('x2', x2.toString());
+			line.setAttribute('y2', y2.toString());
+		}
+
+		function drawTopLeftLine() {
+			const div1 = document.getElementById('name-image');
+			const line = document.getElementById('connecting-line-3');
+
+			if (!div1 || !line) return;
+			
+			const rect1 = div1.getBoundingClientRect();
+			
+			const x1 = rect1.left + 1;
+			const y1 = rect1.top;
+			const x2 = rect1.left + 1;
+			const y2 = 0;
+			
+			line.setAttribute('x1', x1.toString());
+			line.setAttribute('y1', y1.toString());
+			line.setAttribute('x2', x2.toString());
+			line.setAttribute('y2', y2.toString());
+		}
+
+		function drawBottomLeftLine() {
+			const div1 = document.getElementById('center-left');
+			const div2 = document.getElementById('content-container')
+			const line = document.getElementById('connecting-line-4');
+
+			if (!div1 || !div2 || !line) return;
+			
+			const rect1 = div1.getBoundingClientRect();
+			const rect2 = div2.getBoundingClientRect();
+			
+			const x = (rect1.right - rect1.left)/2;
+			const y1 = rect1.top;
+			const y2 = rect2.bottom;
+			
+			line.setAttribute('x1', x.toString());
+			line.setAttribute('y1', y1.toString());
+			line.setAttribute('x2', x.toString());
+			line.setAttribute('y2', y2.toString());
+		}
 		
-		drawLine();
+
+		function drawLines(){
+			drawDiagonalLine();
+			drawTopRightLine();
+			drawTopLeftLine();
+			drawBottomLeftLine();
+		}
 		
-		window.addEventListener('resize', drawLine);
+		drawLines();
+		
+		window.addEventListener('resize', drawLines);
 	</script>
 </div>
