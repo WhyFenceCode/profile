@@ -12,6 +12,13 @@
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.15.3",
-    "tailwindcss": "^4.1.16"
+    "html2canvas": "^1.4.1",
+    "tailwindcss": "^4.1.16",
+    "three": "^0.181.0",
+    "vite-plugin-glsl": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/html2canvas": "^1.0.0",
+    "@types/three": "^0.181.0"
   }
 }

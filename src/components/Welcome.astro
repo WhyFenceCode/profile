@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import name from '../assets/name.svg';
 ---
 
-<div id="container" class="w-dvw h-dvh relative overflow-hidden">
+<div id="container" class="w-dvw h-dvh relative">
 	<div id="content-container" class="h-dvh w-dvw flex flex-col border-x border-color-white">
 		<div id="top" class="w-full min-h-16 grow-2 flex flex-row">
 			<div id="top-left-spacer" class="h-full w-[0.5px]"/>
@@ -101,16 +101,18 @@ import name from '../assets/name.svg';
 
 		function drawTopLeftLine() {
 			const div1 = document.getElementById('name-image');
+			const div2 = document.getElementById('content-container');
 			const line = document.getElementById('connecting-line-3');
 
-			if (!div1 || !line) return;
+			if (!div1 || !div2 || !line) return;
 			
 			const rect1 = div1.getBoundingClientRect();
+			const rect2 = div2.getBoundingClientRect();
 			
 			const x1 = rect1.left + 1;
 			const y1 = rect1.top;
 			const x2 = rect1.left + 1;
-			const y2 = 0;
+			const y2 = rect2.top;
 			
 			line.setAttribute('x1', x1.toString());
 			line.setAttribute('y1', y1.toString());
@@ -120,7 +122,7 @@ import name from '../assets/name.svg';
 
 		function drawBottomLeftLine() {
 			const div1 = document.getElementById('center-left');
-			const div2 = document.getElementById('content-container')
+			const div2 = document.getElementById('content-container');
 			const line = document.getElementById('connecting-line-4');
 
 			if (!div1 || !div2 || !line) return;
