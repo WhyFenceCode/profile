@@ -1,4 +1,4 @@
-uniform sampler2D prevState;
+uniform sampler2D iChannel1;
 uniform vec2 iResolution;
 uniform vec4 iMouse;
 uniform int iFrame;
@@ -16,13 +16,13 @@ void main() {
 
     vec2 texel = vec2(1.0) / iResolution;
 
-    float pressure = texture(prevState, vUv).x;
-    float pVel = texture(prevState, vUv).y;
+    float pressure = texture(iChannel1, vUv).x;
+    float pVel = texture(iChannel1, vUv).y;
 
-    float p_right = texture(prevState, vUv + vec2(2.0 * texel.x, 0.0)).x;
-    float p_left = texture(prevState, vUv - vec2(2.0 * texel.x, 0.0)).x;
-    float p_up = texture(prevState, vUv + vec2(0.0, 2.0 * texel.y)).x;
-    float p_down = texture(prevState, vUv - vec2(0.0, 2.0 * texel.y)).x;
+    float p_right = texture(iChannel1, vUv + vec2(2.0 * texel.x, 0.0)).x;
+    float p_left = texture(iChannel1, vUv - vec2(2.0 * texel.x, 0.0)).x;
+    float p_up = texture(iChannel1, vUv + vec2(0.0, 2.0 * texel.y)).x;
+    float p_down = texture(iChannel1, vUv - vec2(0.0, 2.0 * texel.y)).x;
 
     // Apply horizontal wave function
     pVel += delta * (-2.0 * pressure + p_right + p_left) / 4.0;

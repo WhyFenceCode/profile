@@ -1,12 +1,12 @@
 uniform vec2 iResolution;
-uniform sampler2D prevState;
+uniform sampler2D iChannel1;
 uniform sampler2D iChannel0;
 varying vec2 vUv;
 
 void main() {
     vec2 uv = vUv;
 
-    vec4 data = texture2D(prevState, uv);
+    vec4 data = texture2D(iChannel1, uv);
 
     // Color = texture displaced by water height
     vec4 color = texture2D(iChannel0, uv + 0.2 * data.zw);

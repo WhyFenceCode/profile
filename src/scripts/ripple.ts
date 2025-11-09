@@ -46,7 +46,7 @@ export async function initRipple() {
     iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
     iTime: { value: 0 },
     iMouse: { value: new THREE.Vector4(0,0,0,0) },
-    prevState: { value: prevRT.texture },
+    iChannel1: { value: prevRT.texture },
     iChannel0: { value: texture }
 };
 
@@ -78,7 +78,7 @@ export async function initRipple() {
 
   function animate() {
     uniforms.iTime.value = clock.getElapsedTime();
-    uniforms.prevState.value = prevRT.texture;
+    uniforms.iChannel1.value = prevRT.texture;
 
     renderer.setRenderTarget(currRT);
     renderer.render(scene, camera);
@@ -89,7 +89,7 @@ export async function initRipple() {
     pRenderer.setRenderTarget(prevRT);
     pRenderer.render(scene, pCamera);
 
-    mesh.material.uniforms.prevState.value = prevRT.texture;
+    mesh.material.uniforms.iChannel1.value = prevRT.texture;
     renderer.render(scene, camera);
 
     requestAnimationFrame(animate);
