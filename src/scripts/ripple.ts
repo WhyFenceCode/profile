@@ -16,18 +16,37 @@ export async function initRipple() {
   newCanvas.className = 'w-dvw h-dvh';
   renderCanvas.parentNode?.replaceChild(newCanvas, renderCanvas);
 
-  const renderer = new THREE.WebGLRenderer({ canvas: newCanvas, antialias: true });
+  let pNewCanvas = document.createElement('canvas');
+  pNewCanvas.id = 'pressure-ripple-canvas';
+  pNewCanvas.className = 'w-dvw h-dvh';
+  renderCanvas.parentNode?.appendChild(pNewCanvas);
+
+  const renderer = new THREE.WebGLRenderer({ canvas: newCanvas, antialias: false });
+  const pRenderer = new THREE.WebGLRenderer({ canvas: pNewCanvas, antialias: false });
 
   renderer.setSize(window.innerWidth, window.innerHeight);
+  pRenderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
+  const pScene = new THREE.Scene();
+  const pCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+  const resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
+
+  const rt1 = new THREE.WebGLRenderTarget(resolution.x, resolution.y);
+  const rt2 = new THREE.WebGLRenderTarget(resolution.x, resolution.y);
+  let prevRT = rt1;
+  let currRT = rt2;
+
   const uniforms = {
     iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-    iTime: { value: 0.0 },
+    iTime: { value: 0 },
+    iMouse: { value: new THREE.Vector4(0,0,0,0) },
+    prevState: { value: prevRT.texture },
     iChannel0: { value: texture }
-  };
+};
 
   const material = new THREE.ShaderMaterial({
     vertexShader,
@@ -35,14 +54,44 @@ export async function initRipple() {
     uniforms
   });
 
+  const pressure = new THREE.ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms
+  });
+
+  const pressBuffer = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), pressure);
+  pScene.add(pressBuffer);
+
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
   scene.add(mesh);
 
-  function animate(time: number) {
-    uniforms.iTime.value = time * 0.001;
+  window.addEventListener('mousemove', (e) => {
+    uniforms.iMouse.value.x = e.clientX;
+    uniforms.iMouse.value.y = window.innerHeight - e.clientY;
+    uniforms.iMouse.value.z = 1;
+  });
+
+  let clock = new THREE.Clock();
+
+  function animate() {
+    uniforms.iTime.value = clock.getElapsedTime();
+    uniforms.prevState.value = prevRT.texture;
+
+    renderer.setRenderTarget(currRT);
     renderer.render(scene, camera);
+    renderer.setRenderTarget(null);
+
+    [prevRT, currRT] = [currRT, prevRT];
+
+    pRenderer.setRenderTarget(prevRT);
+    pRenderer.render(scene, camera);
+
+    mesh.material.uniforms.prevState.value = prevRT.texture;
+    renderer.render(scene, camera);
+
     requestAnimationFrame(animate);
   }
 
-  animate(0);
+  animate();
 }
