@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import html2canvas from 'html2canvas';
 import vertexShader from '../shaders/vertex.glsl?raw';
 import fragmentShader from '../shaders/fragment.glsl?raw';
+import displayShader from '../shaders/display.glsl?raw';
+
 
 export async function initRipple() {
   const renderCanvas = document.getElementById('ripple-canvas') as HTMLCanvasElement;
@@ -50,7 +52,7 @@ export async function initRipple() {
 
   const material = new THREE.ShaderMaterial({
     vertexShader,
-    fragmentShader,
+    fragmentShader:displayShader,
     uniforms
   });
 

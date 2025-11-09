@@ -1,55 +1,56 @@
-uniform sampler2D prevState;   // simulation texture (pressure + velocity)
-uniform sampler2D iChannel0;   // captured canvas
+uniform sampler2D prevState;
 uniform vec2 iResolution;
-uniform float iTime;
 uniform vec4 iMouse;
+uniform int iFrame;
 varying vec2 vUv;
 
 const float delta = 1.0;
 
 void main() {
-    vec2 texel = 1.0 / iResolution;
+    vec2 fragCoord = vUv * iResolution;
 
-    // --- Simulation: read neighboring pixels ---
-    vec4 center = texture2D(prevState, vUv);
-    vec4 right  = texture2D(prevState, vUv + vec2(texel.x*2.0, 0.0));
-    vec4 left   = texture2D(prevState, vUv - vec2(texel.x*2.0, 0.0));
-    vec4 up     = texture2D(prevState, vUv + vec2(0.0, texel.y*2.0));
-    vec4 down   = texture2D(prevState, vUv - vec2(0.0, texel.y*2.0));
+    if (iFrame == 0) {
+        gl_FragColor = vec4(0.0);
+        return;
+    }
 
-    float pressure = center.x;
-    float pVel     = center.y;
+    vec2 texel = vec2(1.0) / iResolution;
 
-    // Update velocity based on neighbors
-    pVel += delta * (-2.0 * pressure + right.x + left.x) / 4.0;
-    pVel += delta * (-2.0 * pressure + up.x + down.x) / 4.0;
+    float pressure = texture(prevState, vUv).x;
+    float pVel = texture(prevState, vUv).y;
+
+    float p_right = texture(prevState, vUv + vec2(2.0 * texel.x, 0.0)).x;
+    float p_left = texture(prevState, vUv - vec2(2.0 * texel.x, 0.0)).x;
+    float p_up = texture(prevState, vUv + vec2(0.0, 2.0 * texel.y)).x;
+    float p_down = texture(prevState, vUv - vec2(0.0, 2.0 * texel.y)).x;
+
+    // Apply horizontal wave function
+    pVel += delta * (-2.0 * pressure + p_right + p_left) / 4.0;
+    // Apply vertical wave function
+    pVel += delta * (-2.0 * pressure + p_up + p_down) / 4.0;
 
     // Update pressure
     pressure += delta * pVel;
 
-    // Damping / spring
+    // Spring motion
     pVel -= 0.005 * delta * pressure;
+
+    // Velocity damping
     pVel *= 0.99;
+
+    // Pressure damping
     pressure *= 0.999;
 
-    // --- Mouse disturbance ---
-    vec2 mouseUV = iMouse.xy / iResolution.xy;
-    if (iMouse.z > 0.0) {
-        float dist = distance(vUv, mouseUV);
-        if (dist < 0.02) {
-            pressure += 0.02 * (0.02 - dist);
+    // Gradient calculation
+    vec2 grad = vec2((p_right - p_left) / 2.0, (p_up - p_down) / 2.0);
+
+    // Mouse interaction
+    if (iMouse.z > 1.0) {
+        float dist = distance(fragCoord, iMouse.xy);
+        if (dist <= 20.0) {
+            pressure += 1.0 - dist / 20.0;
         }
     }
 
-    // --- Compute gradient for smooth displacement ---
-    float gradX = (right.x - left.x) * 0.5;
-    float gradY = (up.x - down.x) * 0.5;
-    vec2 displacement = vec2(gradX, gradY);
-
-    // --- Distort the captured canvas ---
-    vec2 uv = vUv + displacement * 0.03; // tweak amplitude for effect
-    vec3 color = texture2D(iChannel0, uv).rgb;
-
-    // Output: display + store simulation in .xy
-    gl_FragColor = vec4(pressure, pVel, color.r, 1.0); 
+    gl_FragColor = vec4(pressure, pVel, grad.x, grad.y);
 }
