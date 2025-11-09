@@ -87,7 +87,7 @@ export async function initRipple() {
     [prevRT, currRT] = [currRT, prevRT];
 
     pRenderer.setRenderTarget(prevRT);
-    pRenderer.render(scene, camera);
+    pRenderer.render(scene, pCamera);
 
     mesh.material.uniforms.prevState.value = prevRT.texture;
     renderer.render(scene, camera);
