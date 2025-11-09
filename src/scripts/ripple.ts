@@ -4,14 +4,20 @@ import vertexShader from '../shaders/vertex.glsl?raw';
 import fragmentShader from '../shaders/fragment.glsl?raw';
 
 export async function initRipple() {
-  const canvas = document.getElementById('ripple-canvas');
-  const hiddenDiv = document.getElementById('offscreen-division');
-  if (!canvas || !hiddenDiv) return;
+  const renderCanvas = document.getElementById('ripple-canvas') as HTMLCanvasElement;
+  const hiddenDiv = document.getElementById('offscreen-division') as HTMLElement;
+  if (!renderCanvas || !hiddenDiv) return;
 
   const divCanvas = await html2canvas(hiddenDiv);
   const texture = new THREE.CanvasTexture(divCanvas);
 
-  const renderer = new THREE.WebGLRenderer({ canvas });
+  let newCanvas = document.createElement('canvas');
+  newCanvas.id = 'ripple-canvas';
+  newCanvas.className = 'w-dvw h-dvh';
+  renderCanvas.parentNode?.replaceChild(newCanvas, renderCanvas);
+
+  const renderer = new THREE.WebGLRenderer({ canvas: newCanvas, antialias: true });
+
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
@@ -32,7 +38,7 @@ export async function initRipple() {
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
   scene.add(mesh);
 
-  function animate(time:number) {
+  function animate(time: number) {
     uniforms.iTime.value = time * 0.001;
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
