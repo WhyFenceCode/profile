@@ -1,21 +1,21 @@
 uniform sampler2D textureA;
 uniform vec2 resolution;
-uniform vec2 mouse;
+uniform vec3 mouse;
 uniform float time;
 uniform int frame;
 varying vec2 vUv;
 
-const float delta = 1.4;
+const float delta = 1.0;
 
 void main() {
     vec2 uv = vUv;
 
-    if (iFrame == 0) {
+    if (frame == 0) {
         gl_FragColor = vec4(0.0);
         return;
     }
 
-    vec4 data = texture2D(texture2D, uv);
+    vec4 data = texture2D(textureA, uv);
 
     float pressure = data.x;
     float pVel = data.y;
@@ -39,13 +39,13 @@ void main() {
     pVel -= 0.005 * delta * pressure;
     pVel *= 1.0 - 0.002 * delta;
 
-    pressure *= 0.999;
+    pressure *= 0.96;
 
-    vec2 mouseUv = mouse / resolution;
+    vec2 mouseUv = vec2(mouse.x, mouse.y) / resolution;
 
-    if(mouse.x > 0.0) {
+    if(mouse.x > 0.0 && mouse.z > 0.5) {
         float dist = distance(uv, mouseUv);
-        if (dist <= 0.02) {
+        if (dist <= 0.05) {
             pressure += 2.0 * (1.0 - dist / 0.2);
         }
     }

@@ -6,7 +6,6 @@ import simFragmentShader from '../shaders/simulationFragment.glsl?raw';
 import dspFragmentShader from '../shaders/displayFragment.glsl?raw';
 
 export async function rippleAnimation(){
-  console.log("started animation")
 
   const dspScene = new THREE.Scene();
   const simScene = new THREE.Scene();
@@ -28,14 +27,15 @@ export async function rippleAnimation(){
     return;
   }
 
-  const outputCanvas = placeholderCanvas.parentNode?.replaceChild(placeholderCanvas, renderer.domElement);
+  const outputCanvas = placeholderCanvas.parentNode?.replaceChild(renderer.domElement, placeholderCanvas);
+
   if (!outputCanvas) {
     console.warn("failed to make output canvas");
     return;
   }
   outputCanvas.className = 'w-dvw h-dvh';
 
-  const mouse = new THREE.Vector2();
+  const mouse = new THREE.Vector3();
   let frame = 0;
 
   const width = window.innerWidth * window.devicePixelRatio;
@@ -111,13 +111,21 @@ export async function rippleAnimation(){
     mouse.y = (window.innerHeight - e.clientY) * window.devicePixelRatio;
   });
 
+  renderer.domElement.addEventListener('mousedown', () => {
+    console.log("mouse pressed");
+    mouse.z = 1.0;
+  });
+
+  renderer.domElement.addEventListener('mouseup', () => {
+    console.log("mouse released");
+    mouse.z = 0.0;
+  });
+
   renderer.domElement.addEventListener("mouseleave", () => {
-    mouse.set(0, 0);
+    mouse.set(0, 0, 0);
   });
 
   const animate = () => {
-    console.log("animating")
-
     simulatedMaterial.uniforms.frame.value = frame++;
     simulatedMaterial.uniforms.time.value = performance.now() / 1000;
   
@@ -137,4 +145,8 @@ export async function rippleAnimation(){
 
     requestAnimationFrame(animate);
   }
+
+  console.log("started animation");
+
+  requestAnimationFrame(animate);
 }
