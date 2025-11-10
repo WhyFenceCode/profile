@@ -1,5 +1,6 @@
-import {initRipple} from '../scripts/ripple.ts';
+import {rippleAnimation} from '../scripts/ripple.ts';
 
 window.addEventListener('DOMContentLoaded', () => {
-    initRipple();
+    console.log("loader started");
+    rippleAnimation();
 });

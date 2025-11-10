@@ -1,108 +1,140 @@
 import * as THREE from 'three';
 import html2canvas from 'html2canvas';
-import vertexShader from '../shaders/vertex.glsl?raw';
-import fragmentShader from '../shaders/fragment.glsl?raw';
-import displayShader from '../shaders/display.glsl?raw';
+import simVertexShader from '../shaders/simulationVertex.glsl?raw';
+import dspVertexShader from '../shaders/displayVertex.glsl?raw';
+import simFragmentShader from '../shaders/simulationFragment.glsl?raw';
+import dspFragmentShader from '../shaders/displayFragment.glsl?raw';
 
+export async function rippleAnimation(){
+  console.log("started animation")
 
-export async function initRipple() {
-  //Get Current Canvases
-  const renderCanvas = document.getElementById('ripple-canvas') as HTMLCanvasElement;
-  const hiddenDiv = document.getElementById('offscreen-division') as HTMLElement;
-  if (!renderCanvas || !hiddenDiv) return;
+  const dspScene = new THREE.Scene();
+  const simScene = new THREE.Scene();
 
-  //Build a background texture from the html (TODO fix flex it breaks here)
-  const divCanvas = await html2canvas(hiddenDiv);
-  const texture = new THREE.CanvasTexture(divCanvas);
+  const camera = new THREE.OrthographicCamera(-1, 1, 2, -1, 0, 1);
 
-  //Ensure a clean canvas by replacing the existing one
-  let newCanvas = document.createElement('canvas');
-  newCanvas.id = 'ripple-canvas';
-  newCanvas.className = 'w-dvw h-dvh';
-  renderCanvas.parentNode?.replaceChild(newCanvas, renderCanvas);
+  const renderer = new THREE.WebGLRenderer({
+    antialias: false,
+    alpha: true,
+    preserveDrawingBuffer: true,
+  });
 
-  //Write a storage canvas for the effect buffer
-  let pNewCanvas = document.createElement('canvas');
-  pNewCanvas.id = 'pressure-ripple-canvas';
-  pNewCanvas.className = 'w-dvw h-dvh';
-  newCanvas.parentNode?.appendChild(pNewCanvas);
-
-  //Set up both renders
-  const renderer = new THREE.WebGLRenderer({ canvas: newCanvas, antialias: false });
-  const pRenderer = new THREE.WebGLRenderer({ canvas: pNewCanvas, antialias: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
-  pRenderer.setSize(window.innerWidth, window.innerHeight);
 
-  //Build both scenes and respective Orthographic Cameras
-  const scene = new THREE.Scene();
-  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-  const pScene = new THREE.Scene();
-  const pCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const placeholderCanvas = document.getElementById('ripple-canvas') as HTMLCanvasElement;
+  if (!placeholderCanvas) {
+    console.warn("failed to find placeholder canvas");
+    return;
+  }
 
-  const resolution = new THREE.Vector2(window.innerWidth, window.innerHeight);
+  const outputCanvas = placeholderCanvas.parentNode?.replaceChild(placeholderCanvas, renderer.domElement);
+  if (!outputCanvas) {
+    console.warn("failed to make output canvas");
+    return;
+  }
+  outputCanvas.className = 'w-dvw h-dvh';
 
-  //Build two render targets
-  const rt1 = new THREE.WebGLRenderTarget(resolution.x, resolution.y);
-  const rt2 = new THREE.WebGLRenderTarget(resolution.x, resolution.y);
-  let mainRT = rt1;
-  let vRT = rt2;
+  const mouse = new THREE.Vector2();
+  let frame = 0;
 
-  //Set Uniforms
-  const uniforms = {
-    iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-    iTime: { value: 0 },
-    iMouse: { value: new THREE.Vector4(0,0,0,0) },
-    iChannel1: { value: vRT.texture },
-    iChannel0: { value: texture }
+  const width = window.innerWidth * window.devicePixelRatio;
+  const height = window.innerHeight * window.devicePixelRatio;
+
+  const renderOptions = {
+    format: THREE.RGBAFormat,
+    type: THREE.FloatType,
+    minFilter: THREE.LinearFilter,
+    magFilter: THREE.LinearFilter,
+    stencilBuffer: false,
+    depthBuffer: false,
   };
 
-  //Display Material
-  const material = new THREE.ShaderMaterial({
-    vertexShader,
-    fragmentShader:displayShader,
-    uniforms
+  let targetA = new THREE.WebGLRenderTarget(width, height, renderOptions);
+  let targetB = new THREE.WebGLRenderTarget(width, height, renderOptions);
+
+  const simulatedMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+      textureA: {value:null},
+      mouse: {value:mouse},
+      resolution: {value: new THREE.Vector2(width, height)},
+      time: {value: 0},
+      frame: {value: 0},
+    },
+    vertexShader: simVertexShader,
+    fragmentShader: simFragmentShader,
   });
 
-  //Simulation Material
-  const pressure = new THREE.ShaderMaterial({
-    vertexShader,
-    fragmentShader,
-    uniforms
+  const displayMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+      textureA: {value: null},
+      textureB: {value: null}
+    },
+    vertexShader: dspVertexShader,
+    fragmentShader: dspFragmentShader,
   });
 
-  //Build both capture meshes
-  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
-  scene.add(mesh);
-  const pMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), pressure);
-  pScene.add(pMesh);
+  const plane = new THREE.PlaneGeometry(2, 2);
+  const simPlane = new THREE.Mesh(plane, simulatedMaterial);
+  const dspPlane = new THREE.Mesh(plane, displayMaterial);
 
-  //Alter uniforms with mouse input
-  window.addEventListener('mousemove', (e) => {
-    uniforms.iMouse.value.x = e.clientX;
-    uniforms.iMouse.value.y = window.innerHeight - e.clientY;
-    uniforms.iMouse.value.z = 1;
+  simScene.add(simPlane);
+  dspScene.add(dspPlane);
+
+  const hiddenDiv = document.getElementById('offscreen-division') as HTMLElement;
+  if (!hiddenDiv) return;
+  let divCanvas = await html2canvas(hiddenDiv);
+  let backgroundTexture = new THREE.CanvasTexture(divCanvas);  
+
+  backgroundTexture.minFilter = THREE.LinearFilter;
+  backgroundTexture.magFilter = THREE.LinearFilter;
+  backgroundTexture.format = THREE.RGBAFormat;
+
+  window.addEventListener("resize", () => resizeRenderers());
+
+  async function resizeRenderers() {
+    const newWidth = window.innerWidth * window.devicePixelRatio;
+    const newHeight = window.innerHeight * window.devicePixelRatio;
+  
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    targetA.setSize(newWidth, newHeight);
+    targetB.setSize(newWidth, newHeight);
+
+    divCanvas = await html2canvas(hiddenDiv);
+    backgroundTexture = new THREE.CanvasTexture(divCanvas);
+
+    backgroundTexture.needsUpdate = true;
+  }
+
+  renderer.domElement.addEventListener("mousemove", (e) => {
+    mouse.x = e.clientX * window.devicePixelRatio;
+    mouse.y = (window.innerHeight - e.clientY) * window.devicePixelRatio;
   });
 
-  let clock = new THREE.Clock();
+  renderer.domElement.addEventListener("mouseleave", () => {
+    mouse.set(0, 0);
+  });
 
-  //Render and write all buffers
-  function animate() {
-    uniforms.iTime.value = clock.getElapsedTime();
-    uniforms.iChannel1.value = vRT.texture;
-    renderer.setRenderTarget(mainRT);
-    renderer.render(scene, camera);
+  const animate = () => {
+    console.log("animating")
+
+    simulatedMaterial.uniforms.frame.value = frame++;
+    simulatedMaterial.uniforms.time.value = performance.now() / 1000;
+  
+    simulatedMaterial.uniforms.textureA.value = targetA.texture;
+    renderer.setRenderTarget(targetB);
+    renderer.render(simScene, camera);
+
+    displayMaterial.uniforms.textureA.value = targetB.texture;
+    displayMaterial.uniforms.textureB.value = backgroundTexture;
+
     renderer.setRenderTarget(null);
+    renderer.render(dspScene, camera);
 
-    pRenderer.setRenderTarget(vRT);
-    pRenderer.render(scene, pCamera);
-    pRenderer.setRenderTarget(null);
-
-    uniforms.iChannel1.value = vRT.texture;
-    renderer.render(scene, camera);
-
+    const targetTemp = targetA;
+    targetA = targetB;
+    targetB = targetTemp;
 
     requestAnimationFrame(animate);
   }
-
-  animate();
 }
