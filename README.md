@@ -15,7 +15,7 @@ let year = 2008;
 let age = 0.0;
 let country = 'Canada';
 let city = 'Vancouver';
-let name = "Torsten Young;
+let name = "Torsten Young";
 
 await spawn(name, [country, city], [year, age]);
 ```
