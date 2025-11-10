@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
 import simVertexShader from '../shaders/simulationVertex.glsl?raw';
 import dspVertexShader from '../shaders/displayVertex.glsl?raw';
 import simFragmentShader from '../shaders/simulationFragment.glsl?raw';
@@ -83,8 +83,16 @@ export async function rippleAnimation(){
 
   const hiddenDiv = document.getElementById('offscreen-division') as HTMLElement;
   if (!hiddenDiv) return;
-  let divCanvas = await html2canvas(hiddenDiv);
-  let backgroundTexture = new THREE.CanvasTexture(divCanvas);  
+
+  const dataUrl = await htmlToImage.toPng(hiddenDiv, {
+    cacheBust: true,
+    backgroundColor: 'transparent'
+  });
+  const image = new Image();
+  image.src = dataUrl;
+  await image.decode();
+  let backgroundTexture = new THREE.Texture(image);
+  resizeRenderers(); //Required due to quirk where it only loads on the second try, therefore making this the first actual load
 
   backgroundTexture.minFilter = THREE.LinearFilter;
   backgroundTexture.magFilter = THREE.LinearFilter;
@@ -100,9 +108,16 @@ export async function rippleAnimation(){
     targetA.setSize(newWidth, newHeight);
     targetB.setSize(newWidth, newHeight);
 
-    divCanvas = await html2canvas(hiddenDiv);
-    backgroundTexture = new THREE.CanvasTexture(divCanvas);
+    const dataUrl = await htmlToImage.toPng(hiddenDiv, {
+      cacheBust: true,
+      backgroundColor: 'transparent'
+    });
 
+    const image = new Image();
+    image.src = dataUrl;
+    await image.decode();
+
+    backgroundTexture.image = image;
     backgroundTexture.needsUpdate = true;
   }
 

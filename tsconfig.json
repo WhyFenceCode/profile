@@ -6,6 +6,6 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "types": ["three", "html2canvas"]
+    "types": ["three"]
   }
 }
