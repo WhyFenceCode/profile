@@ -1,0 +1,110 @@
+---
+const birthYear = new Date().getFullYear() - 2008;
+const location = "VANCOUVER, CANADA";
+---
+
+<div id="container" class="w-dvw h-dvh relative cursor-none">
+	<div id="fold-container" class="h-full w-full flex bg-gray-100">
+		<div class="flex grow p-16 flex flex-col">
+			<div class="w-full h-fit flex flex-row">
+				<p class="font-mono text-2xl font-light">
+					<a class="cursor-none hover-target" href="#">ABOUT ME</a> | 
+					<a class="cursor-none" href="#">EDUCATION</a> | 
+					<a class="cursor-none" href="#">EXPERIENCE</a> |
+					<a class="cursor-none" href="#">PROJECTS</a>
+				</p>
+				<div class="grow"/>
+				<p class="font-mono text-2xl font-light flex justify-center w-fit h-fit hover:bg-amber-500 hover:text-white hover:w-38">
+					<a class="cursor-none" href="#">CONTACT ME</a>
+				</p>
+			</div>
+			<div class="w-full grow flex flex-col justify-center items-center">
+				<p class="font-mono font-regular text-3xl">"HELLO, WORLD!"</p>
+				<p class="font-mono font-regular text-3xl">MY NAME IS</p>
+				<div class="flex flex-row">
+					<div class="flex flex-col justify-center items-center h-fit w-fit">
+						<h1 class="font-accent font-light text-[11rem] -mb-15 -mt-12">Torsten</h1>
+						<h1 class="font-accent font-black text-[11rem] -mt-15">Young</h1>
+					</div>
+					<div class="h-full w-fit flex flex-col ml-2">
+						<div class="grow-4"/>
+						<div class="size-14 bg-amber-500 rounded-full"></div>
+						<div class="grow-5"/>
+					</div>
+				</div>
+				<p class="font-mono font-light text-3xl mt-8"><b id="meFrontString" class="font-light"></b><b id="meString" class="text-amber-500 font-black"></b></p>
+			</div>
+			<div class="w-full h-fit flex flex-row">
+				<p class="font-mono text-2xl font-light">{location}</p>
+				<div class="grow"/>
+				<div class="h-full flex justify-center items-end">
+					<p class="text-md font-mono font-light hover-target hover:text-xl transition-[font-size]">\ SCROLL FOR MORE /</p>
+				</div>
+				<div class="grow"/>
+				<p class="font-mono text-2xl font-light">T+ {(birthYear-1) + "/" + birthYear} YEARS</p>
+			</div>
+		</div>
+	</div>
+	<div id="custom-cursor" class="size-6 rounded-full bg-black absolute pointer-events-none transition-[width,height]" />
+</div>
+
+<script>
+	import { meStrings } from "../assets/meStrings";
+
+  	const el = document.getElementById("meString");
+	const elFront = document.getElementById("meFrontString");
+	const vowels = ['a', 'e', 'i', 'o', 'u'];
+
+	async function typeWriterEffect(strings:Array<string>, element:HTMLElement, frontElement:HTMLElement) {
+  		for (const text of strings) {
+			const firstChar = text[0]?.toLowerCase() || "";
+			if (vowels.includes(firstChar)) {
+				frontElement.textContent = "I'M AN ";
+			} else {
+				frontElement.textContent = "I'M A ";
+			}
+
+			for (let i = 0; i < text.length; i++) {
+				element.textContent = text.slice(0, i + 1).toUpperCase();
+			
+				await new Promise(r => setTimeout(r, Math.random() * 70 + 30));
+			}
+
+			await new Promise(r => setTimeout(r, Math.random() * 100 + 1000));
+
+			element.textContent = "";
+		}
+
+		typeWriterEffect(strings, element, frontElement);
+	}
+
+	if (el && elFront) {typeWriterEffect(meStrings, el, elFront)} else {console.warn("Failed to find string rotor 1 or 2")};
+
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const customCursor = document.getElementById('custom-cursor');
+
+    document.addEventListener('mousemove', (e) => {
+		if (!customCursor) return;
+        const cursorSize = customCursor.clientWidth / 2;
+        customCursor.style.left = `${e.clientX - cursorSize}px`;
+        customCursor.style.top = `${e.clientY - cursorSize}px`;
+    });
+
+	const hoverTargets = document.querySelectorAll('a, button, [role="button"], input[type="button"], input[type="submit"], .hover-target');
+    hoverTargets.forEach(target => {
+		if (!customCursor) return;
+        target.addEventListener('mouseenter', () => {
+			customCursor.classList.remove('size-6');
+            customCursor.classList.add('size-4');
+        });
+        target.addEventListener('mouseleave', () => {
+            customCursor.classList.remove('size-4');
+            customCursor.classList.add('size-6');
+        });
+    });
+
+});
+</script>

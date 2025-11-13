@@ -2,4 +2,5 @@
 
 @theme {
   --font-mono: 'JetBrains Mono Variable', 'monospace';
+  --font-accent: 'Sansita Swashed Variable', system-ui;
 }

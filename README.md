@@ -1,46 +1,27 @@
-# Astro Starter Kit: Basics
+# Hi I am Torsten 👋
 
 ```sh
-pnpm create astro@latest -- --template basics
+pnpm created torsten@2008.0.0 -- --template baby
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+> 🧑‍🚀 **Interested?** Read further, or jump onto my site to learn even more
 
-## 🚀 Project Structure
+## 🚀 Launch Time
 
-Inside of your Astro project, you'll see the following folders and files:
+Beginning life, there were a number of variables to set:
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```js
+let year = 2008;
+let age = 0.0;
+let country = 'Canada';
+let city = 'Vancouver';
+let name = "Torsten Young";
+
+await spawn(name, [country, city], [year, age]);
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+To learn more about life of an Torsten, refer to [my website](TODO ADD WEBSITE LINK).
 
-## 🧞 Commands
+## 👀 Want to connect?
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Feel free to contact me on [my Linkedin](TODO ADD A Linkedin) or send me an [email](TODO SEND EMAIL).
