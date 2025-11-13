@@ -3,18 +3,18 @@ const birthYear = new Date().getFullYear() - 2008;
 const location = "VANCOUVER, CANADA";
 ---
 
-<div id="container" class="w-dvw h-dvh relative">
+<div id="container" class="w-dvw h-dvh relative cursor-none">
 	<div id="content-container" class="h-full w-full flex bg-gray-100">
 		<div class="flex grow p-16 flex flex-col">
 			<div class="w-full h-fit flex flex-row">
 				<p class="font-mono text-2xl font-light">
-					<a href="#">ABOUT ME</a> | 
-					<a href="#">EDUCATION</a> | 
-					<a href="#">EXPERIENCE</a> |
-					<a href="#">PROJECTS</a>
+					<a class="cursor-none hover-target" href="#">ABOUT ME</a> | 
+					<a class="cursor-none" href="#">EDUCATION</a> | 
+					<a class="cursor-none" href="#">EXPERIENCE</a> |
+					<a class="cursor-none" href="#">PROJECTS</a>
 				</p>
 				<div class="grow"/>
-				<p class="font-mono text-2xl font-light"><a href="#">CONTACT ME</a></p>
+				<p class="font-mono text-2xl font-light w-fit h-fit"><a class="cursor-none" href="#">CONTACT ME</a></p>
 			</div>
 			<div class="w-full grow flex flex-col justify-center items-center">
 				<p class="font-mono font-regular text-3xl">"HELLO, WORLD!"</p>
@@ -39,6 +39,7 @@ const location = "VANCOUVER, CANADA";
 			</div>
 		</div>
 	</div>
+	<div id="custom-cursor" class="size-6 rounded-full bg-black absolute pointer-events-none transition-[width,height]" />
 </div>
 
 <script>
@@ -75,3 +76,29 @@ const location = "VANCOUVER, CANADA";
 
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const customCursor = document.getElementById('custom-cursor');
+
+    document.addEventListener('mousemove', (e) => {
+		if (!customCursor) return;
+        const cursorSize = customCursor.clientWidth / 2;
+        customCursor.style.left = `${e.clientX - cursorSize}px`;
+        customCursor.style.top = `${e.clientY - cursorSize}px`;
+    });
+
+	const hoverTargets = document.querySelectorAll('a, button, [role="button"], input[type="button"], input[type="submit"], .hover-target');
+    hoverTargets.forEach(target => {
+		if (!customCursor) return;
+        target.addEventListener('mouseenter', () => {
+			customCursor.classList.remove('size-6');
+            customCursor.classList.add('size-4');
+        });
+        target.addEventListener('mouseleave', () => {
+            customCursor.classList.remove('size-4');
+            customCursor.classList.add('size-6');
+        });
+    });
+
+});
+</script>
