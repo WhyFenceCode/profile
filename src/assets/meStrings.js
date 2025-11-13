@@ -1,0 +1,18 @@
+export const meStrings = [
+  "High School Senior",
+  "Web Designer",
+  "Human, Not AI",
+  "Single Guy",
+  "Aspiring Engineer",
+  "Coffee Addict",
+  "Amateur Soccer Player",
+  "Physics Nerd",
+  "Sailing Instructor",
+  "Student Leader",
+  "Ride “The Club” Regular",
+  "Future Something-Or-Other",
+  "IB Director",
+  "Chrome Tab Hoarder",
+  "Professional Procrastinator",
+  "IB Mentor",
+];

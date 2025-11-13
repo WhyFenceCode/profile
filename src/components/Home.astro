@@ -1,153 +1,77 @@
 ---
-import { Image } from 'astro:assets';
-import name from '../assets/name.svg';
+const birthYear = new Date().getFullYear() - 2008;
+const location = "VANCOUVER, CANADA";
 ---
 
 <div id="container" class="w-dvw h-dvh relative">
-	<div id="content-container" class="h-full w-full flex flex-col border-x border-color-white">
-		<div id="top" class="w-full min-h-16 grow-2 flex flex-row">
-			<div id="top-left-spacer" class="h-full w-[0.5px]"/>
-			<div id="top-left" class="h-full grow border-r">
-
+	<div id="content-container" class="h-full w-full flex bg-gray-100">
+		<div class="flex grow p-16 flex flex-col">
+			<div class="w-full h-fit flex flex-row">
+				<p class="font-mono text-2xl font-light">
+					<a href="#">ABOUT ME</a> | 
+					<a href="#">EDUCATION</a> | 
+					<a href="#">EXPERIENCE</a> |
+					<a href="#">PROJECTS</a>
+				</p>
+				<div class="grow"/>
+				<p class="font-mono text-2xl font-light"><a href="#">CONTACT ME</a></p>
 			</div>
-			<div id="top-right" class="h-full flex flex-col">
-				<div id="menubar" class="w-full h-16 w-fit border-b flex">
-					<div class="h-full aspect-square"/>
-					<div class="h-full flex items-center justify-center w-max"><a href="#" class="font-mono text-xl font-light">EDUCATION / LIFE</a></div>
-					<div class="h-full aspect-square"/>
-					<div class="h-full flex items-center justify-center w-max"><a href="#" class="font-mono text-xl font-light">SKILLS</a></div>
-					<div class="h-full aspect-square"/>
-					<div class="h-full flex items-center justify-center w-max"><a href="#" class="font-mono text-xl font-light">LEADERSHIP / EXPERIENCE</a></div>
-					<div class="h-full aspect-square"/>
-					<div class="h-full flex items-center justify-center w-max"><a href="#" class="font-mono text-xl font-light">PROJECTS</a></div>
-					<div class="h-full aspect-square"/>
-					<div class="h-full w-32 border-l" />
+			<div class="w-full grow flex flex-col justify-center items-center">
+				<p class="font-mono font-regular text-3xl">"HELLO, WORLD!"</p>
+				<p class="font-mono font-regular text-3xl">MY NAME IS</p>
+				<div class="flex flex-row">
+					<div class="flex flex-col justify-center items-center h-fit w-fit">
+						<h1 class="font-accent font-light text-[11rem] -mb-15 -mt-12">Torsten</h1>
+						<h1 class="font-accent font-black text-[11rem] -mt-15">Young</h1>
+					</div>
+					<div class="h-full w-fit flex flex-col ml-2">
+						<div class="grow-4"/>
+						<div class="size-14 bg-amber-500 rounded-full"></div>
+						<div class="grow-5"/>
+					</div>
 				</div>
-				<div class="grow"></div>
+				<p class="font-mono font-light text-3xl mt-8"><b id="meFrontString" class="font-light"></b><b id="meString" class="text-amber-500 font-black"></b></p>
 			</div>
-		</div>
-		<div id="center" class="w-full h-96 max-h-fit flex">
-			<div id="center-left" class="h-full min-w-12  grow-2 flex border-y">
-				<div class="h-241/471 w-full border-b"/>
-			</div>
-			<div id="center-center" class="h-full">
-				<Image id="name-image" src={name} priority alt="Torsten Young" class="h-full w-full pointer-events-none" />
-			</div>
-			<div class="grow-7"/>
-		</div>
-		<div id="bottom" class="w-full min-h-20 grow-2 flex">
-			<div class="grow-5"/>
-			<div class="h-full w-fit flex flex-col">
-				<div class="grow" />
-				<div id="line-1-2" class="border w-80 h-16 flex items-center justify-center"><a href="#" class="font-mono text-4xl font-light">CONTACT ME &lt3</a></div>
-				<div class="grow border-r" />
-			</div>
-			<div class="grow h-full flex flex-col">
-				<div class="grow" />
-				<div class="h-16 border-t" />
-				<div class="grow" />
+			<div class="w-full h-fit flex flex-row">
+				<p class="font-mono text-2xl font-light">{location}</p>
+				<div class="grow"/>
+				<p class="font-mono text-2xl font-light">T+ {(birthYear-1) + "/" + birthYear} YEARS</p>
 			</div>
 		</div>
 	</div>
-	<svg id="line-svg" class="absolute top-0 left-0 w-dvw h-dvh pointer-events-none -z-1">
-  		<line id="connecting-line-1" stroke="black" stroke-width="1" />
-		<line id="connecting-line-2" stroke="black" stroke-width="1" />
-		<line id="connecting-line-3" stroke="black" stroke-width="1" />
-		<line id="connecting-line-4" stroke="black" stroke-width="1" />
-	</svg>
-	<script>
-		// Draw the diagonal line, connecting name and the contact button
-		function drawDiagonalLine() {
-			const div1 = document.getElementById('name-image');
-			const div2 = document.getElementById('line-1-2');
-			const line = document.getElementById('connecting-line-1');
-			
-			if (!div1 || !div2 || !line) return;
-			
-			const rect1 = div1.getBoundingClientRect();
-			const rect2 = div2.getBoundingClientRect();
-			
-			const x1 = rect1.right;
-			const y1 = rect1.bottom;
-			const x2 = rect2.right;
-			const y2 = rect2.top;
-			
-			line.setAttribute('x1', x1.toString());
-			line.setAttribute('y1', y1.toString());
-			line.setAttribute('x2', x2.toString());
-			line.setAttribute('y2', y2.toString());
-		}
-
-		function drawTopRightLine() {
-			const div1 = document.getElementById('name-image');
-			const div2 = document.getElementById('menubar');
-			const line = document.getElementById('connecting-line-2');
-
-			if (!div1 || !div2 || !line) return;
-			
-			const rect1 = div1.getBoundingClientRect();
-			const rect2 = div2.getBoundingClientRect();
-			
-			const x1 = rect1.right;
-			const y1 = rect1.top;
-			const x2 = rect1.right;
-			const y2 = rect2.bottom;
-			
-			line.setAttribute('x1', x1.toString());
-			line.setAttribute('y1', y1.toString());
-			line.setAttribute('x2', x2.toString());
-			line.setAttribute('y2', y2.toString());
-		}
-
-		function drawTopLeftLine() {
-			const div1 = document.getElementById('name-image');
-			const line = document.getElementById('connecting-line-3');
-
-			if (!div1 || !line) return;
-			
-			const rect1 = div1.getBoundingClientRect();
-			
-			const x1 = rect1.left + 1;
-			const y1 = rect1.top;
-			const x2 = rect1.left + 1;
-			const y2 = 0;
-			
-			line.setAttribute('x1', x1.toString());
-			line.setAttribute('y1', y1.toString());
-			line.setAttribute('x2', x2.toString());
-			line.setAttribute('y2', y2.toString());
-		}
-
-		function drawBottomLeftLine() {
-			const div1 = document.getElementById('center-left');
-			const div2 = document.getElementById('content-container')
-			const line = document.getElementById('connecting-line-4');
-
-			if (!div1 || !div2 || !line) return;
-			
-			const rect1 = div1.getBoundingClientRect();
-			const rect2 = div2.getBoundingClientRect();
-			
-			const x = (rect1.right - rect1.left)/2;
-			const y1 = rect1.top;
-			const y2 = rect2.bottom;
-			
-			line.setAttribute('x1', x.toString());
-			line.setAttribute('y1', y1.toString());
-			line.setAttribute('x2', x.toString());
-			line.setAttribute('y2', y2.toString());
-		}
-		
-
-		function drawLines(){
-			drawDiagonalLine();
-			drawTopRightLine();
-			drawTopLeftLine();
-			drawBottomLeftLine();
-		}
-		
-		drawLines();
-		
-		window.addEventListener('resize', drawLines);
-	</script>
 </div>
+
+<script>
+	import { meStrings } from "../assets/meStrings";
+
+  	const el = document.getElementById("meString");
+	const elFront = document.getElementById("meFrontString");
+	const vowels = ['a', 'e', 'i', 'o', 'u'];
+
+	async function typeWriterEffect(strings:Array<string>, element:HTMLElement, frontElement:HTMLElement) {
+  		for (const text of strings) {
+			const firstChar = text[0]?.toLowerCase() || "";
+			if (vowels.includes(firstChar)) {
+				frontElement.textContent = "I'M AN ";
+			} else {
+				frontElement.textContent = "I'M A ";
+			}
+
+			for (let i = 0; i < text.length; i++) {
+				element.textContent = text.slice(0, i + 1).toUpperCase();
+			
+				await new Promise(r => setTimeout(r, Math.random() * 70 + 30));
+			}
+
+			await new Promise(r => setTimeout(r, Math.random() * 100 + 1000));
+
+			element.textContent = "";
+		}
+
+		typeWriterEffect(strings, element, frontElement);
+	}
+
+	if (el && elFront) {typeWriterEffect(meStrings, el, elFront)} else {console.warn("Failed to Find")};
+
+</script>
+
