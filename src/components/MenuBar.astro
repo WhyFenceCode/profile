@@ -69,8 +69,19 @@ const location = "VANCOUVER, CANADA";
 </script>
 
 <script>
+    import { scrollTagExclude } from "../assets/scrollTagExclude";
+
+    const currentPath = window.location.pathname;
     const innerContent = document.getElementById('innerContent');
     const scrollTag = document.getElementById('scrollTag')
+
+    console.log(currentPath);
+
+    if (currentPath && scrollTag) {
+        if (scrollTagExclude.includes(currentPath)){
+            scrollTag.classList.add("invisible");
+        }
+    }
 
     if (innerContent) innerContent.addEventListener('scroll', function() {
         if (!scrollTag) return;
