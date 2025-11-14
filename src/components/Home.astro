@@ -1,5 +1,10 @@
 ---
-const birthYear = new Date().getFullYear() - 2008;
+let timeTo = Math.round((new Date().getTime() - new Date("2026-6-9").getTime())/(1000 * 60 * 60 * 24)).toString();
+if (timeTo.charAt(0) == "-") {
+	timeTo = "- " + timeTo.slice(1);
+} else {
+	timeTo = "+ " + timeTo;
+}
 const location = "VANCOUVER, CANADA";
 ---
 
@@ -41,7 +46,7 @@ const location = "VANCOUVER, CANADA";
 					<p class="text-md font-mono font-light hover-target hover:text-xl transition-[font-size]">\ SCROLL FOR MORE /</p>
 				</div>
 				<div class="grow"/>
-				<p class="font-mono text-2xl font-light">T+ {(birthYear-1) + "/" + birthYear} YEARS</p>
+				<p class="font-mono text-2xl font-light">T{timeTo} DAYS UNTIL GRAD</p>
 			</div>
 		</div>
 	</div>
