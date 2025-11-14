@@ -1,0 +1,81 @@
+---
+let timeTo = Math.round((new Date().getTime() - new Date("2026-6-9").getTime())/(1000 * 60 * 60 * 24)).toString();
+if (timeTo.charAt(0) == "-") {
+	timeTo = "- " + timeTo.slice(1);
+} else {
+	timeTo = "+ " + timeTo;
+}
+const location = "VANCOUVER, CANADA";
+---
+
+<div id="container" class="w-dvw h-dvh relative cursor-none">
+	<div id="fold-container" class="h-full w-full flex bg-gray-100">
+		<div class="flex grow p-16 flex flex-col">
+			<div class="w-full h-fit flex flex-row">
+				<p class="font-mono text-2xl font-light">
+					<a class="cursor-none hover-target" href="#">ABOUT ME</a> | 
+					<a class="cursor-none" href="#">EDUCATION</a> | 
+					<a class="cursor-none" href="#">EXPERIENCE</a> |
+					<a class="cursor-none" href="#">PROJECTS</a>
+				</p>
+				<div class="grow pointer-events-none"/>
+				<p class="font-mono text-2xl font-light flex justify-center w-fit h-fit hover:bg-amber-500 hover:text-white hover:w-38">
+					<a class="cursor-none" href="#">CONTACT ME</a>
+				</p>
+			</div>
+			<div id="innerContent" class="w-full grow overflow-x-hidden overflow-y-auto">
+				<slot />
+			</div>
+			<div class="w-full h-fit flex flex-row relative z-100">
+				<p class="font-mono text-2xl font-light">{location}</p>
+				<div class="grow pointer-events-none"/>
+				<p class="font-mono text-2xl font-light">T{timeTo} DAYS UNTIL GRAD</p>
+				<div id="scrollTag" class="absolute bottom-0 left-1/2 -translate-x-1/2">
+					<p class="text-md font-mono font-light hover-target hover:text-xl transition-[font-size]">\ SCROLL FOR MORE /</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="custom-cursor" class="size-6 rounded-full bg-black absolute pointer-events-none transition-[width,height]" />
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const customCursor = document.getElementById('custom-cursor');
+
+        document.addEventListener('mousemove', (e) => {
+            if (!customCursor) return;
+            const cursorSize = customCursor.clientWidth / 2;
+            customCursor.style.left = `${e.clientX - cursorSize}px`;
+            customCursor.style.top = `${e.clientY - cursorSize}px`;
+        });
+
+        const hoverTargets = document.querySelectorAll('a, button, [role="button"], input[type="button"], input[type="submit"], .hover-target');
+        hoverTargets.forEach(target => {
+            if (!customCursor) return;
+            target.addEventListener('mouseenter', () => {
+                customCursor.classList.remove('size-6');
+                customCursor.classList.add('size-4');
+            });
+            target.addEventListener('mouseleave', () => {
+                customCursor.classList.remove('size-4');
+                customCursor.classList.add('size-6');
+            });
+        });
+
+    });
+</script>
+
+<script>
+    const innerContent = document.getElementById('innerContent');
+    const scrollTag = document.getElementById('scrollTag')
+
+    if (innerContent) innerContent.addEventListener('scroll', function() {
+        if (!scrollTag) return;
+        if (innerContent.scrollTop == 0) {
+            scrollTag.classList.remove("invisible");
+        } else {
+            scrollTag.classList.add("invisible");
+        }
+    });
+</script>
