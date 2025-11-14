@@ -73,9 +73,7 @@ const location = "VANCOUVER, CANADA";
 
     const currentPath = window.location.pathname;
     const innerContent = document.getElementById('innerContent');
-    const scrollTag = document.getElementById('scrollTag')
-
-    console.log(currentPath);
+    const scrollTag = document.getElementById('scrollTag');
 
     if (currentPath && scrollTag) {
         if (scrollTagExclude.includes(currentPath)){
@@ -87,8 +85,25 @@ const location = "VANCOUVER, CANADA";
         if (!scrollTag) return;
         if (innerContent.scrollTop == 0) {
             scrollTag.classList.remove("invisible");
+            alternateExclusions();
         } else {
             scrollTag.classList.add("invisible");
+            alternateExclusions();
         }
     });
+
+    function alternateExclusions(){
+        if (!innerContent || !scrollTag) return;
+        let maxScrollTop = innerContent.scrollHeight - innerContent.clientHeight
+
+        if (scrollTagExclude.includes(currentPath)){
+            scrollTag.classList.add("invisible");
+        }
+
+        if (innerContent.scrollTop == maxScrollTop){
+            scrollTag.classList.add("invisible");
+        }
+    } 
+    
+    alternateExclusions();
 </script>
