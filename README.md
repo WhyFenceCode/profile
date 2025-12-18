@@ -11,7 +11,7 @@ pnpm created torsten@2008.0.0 -- --template baby
 Beginning life, there were a number of variables to set:
 
 ```js
-let year = 2008;
+let year = unknown;
 let age = 0.0;
 let country = 'Canada';
 let city = 'Vancouver';
