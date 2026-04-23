@@ -1,0 +1,13 @@
+---
+const { author } = Astro.props;
+---
+<div class="w-full">
+	<div class="w-full flex flex-row justify-start items-center">
+		<div class="h-2/4 mx-32 flex flex-col max-w-2/5">
+            <p class="font-mono text-2xl uppercase text-justify leading-10">
+                <slot />
+            </p>
+            <p class="grow font-mono text-xl uppercase font-light mt-6" >-{author}</p>
+        </div>
+	</div>
+</div>
