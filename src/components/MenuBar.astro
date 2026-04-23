@@ -1,21 +1,42 @@
 ---
-let timeTo = Math.round((new Date().getTime() - new Date("2026-6-9").getTime())/(1000 * 60 * 60 * 24)).toString();
-if (timeTo.charAt(0) == "-") {
-	timeTo = "- " + timeTo.slice(1);
-} else {
-	timeTo = "+ " + timeTo;
-}
 const location = "VANCOUVER, CANADA";
+
+import { dateSets } from "../assets/data"
+const dateCount = dateSets.length;
+
+let isDateSet = false;
+let i = 0;
+let finalDate = null;
+let timeTo = null;
+
+while (!isDateSet && i < dateCount) {
+    if (new Date(dateSets[i][0]) >= new Date()) {
+        finalDate = i;
+        isDateSet = true;
+    } else i++;
+}
+
+if (isDateSet){
+    timeTo = Math.round((new Date().getTime() - new Date(dateSets[i][0]).getTime())/(1000 * 60 * 60 * 24)).toString();
+    if (timeTo.charAt(0) == "-") {
+        timeTo = "- " + timeTo.slice(1);
+    } else {
+        timeTo = "+ " + timeTo;
+    }
+}
+
+let dateGoal = dateSets[i][1];
 ---
 
 <div id="container" class="w-dvw h-dvh relative cursor-none">
 	<div class="h-full w-full flex bg-gray-100 relative">
         <div class="w-full h-fit flex flex-row px-16 pt-16 absolute top-0 left-0">
             <p class="font-mono text-2xl font-light">
-                <a class="cursor-none hover-target" href="#">ABOUT ME</a> | 
+                <a class="cursor-none hover-target" href="#">ABOUT</a> | 
                 <a class="cursor-none" href="#">VALUES</a> | 
-                <a class="cursor-none" href="#">EDUEXPERIENCE</a> |
-                <a class="cursor-none" href="#">SKILLS</a>
+                <a class="cursor-none" href="#">EDUCATION + EXPERIENCE</a> |
+                <a class="cursor-none" href="#">SKILLS</a> |
+                <a class="cursor-none" href="#">CV</a>
             </p>
             <div class="grow pointer-events-none"/>
             <p class="font-mono text-2xl font-light flex justify-center w-fit h-fit hover:bg-amber-500 hover:text-white hover:w-38">
@@ -32,7 +53,7 @@ const location = "VANCOUVER, CANADA";
         <div class="w-full h-fit flex flex-row absolute bottom-0 left-0 z-100 px-16 pb-16">
             <p class="font-mono text-2xl font-light">{location}</p>
             <div class="grow pointer-events-none"/>
-            <p class="font-mono text-2xl font-light">T{timeTo} DAYS UNTIL GRAD</p>
+            <p class="font-mono text-2xl font-light">T{timeTo} DAYS {dateGoal}</p>
             <div id="scrollTag" class="absolute bottom-16 left-1/2 -translate-x-1/2">
                 <p class="text-md font-mono font-light hover-target hover:text-xl transition-[font-size]">\ SCROLL FOR MORE /</p>
             </div>
