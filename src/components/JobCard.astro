@@ -1,0 +1,32 @@
+---
+const { employer, type, positions } = Astro.props;
+---
+
+<div class="mt-8 w-full">
+    <div class="w-full flex justify-start items-center flex-row">
+        <div class="flex items-center">
+            <slot />
+        </div>
+        <div class="grow">
+            <p class="font-mono font-bold text-2xl uppercase">{employer}</p>
+            <p class="font-mono font-light text-xl uppercase">{type}</p>
+        </div>
+    </div>
+    <div class="w-full mt-6">
+        {positions.map((item:any) => (
+            <div class="w-full mt-4">
+                <div class="w-full flex flex-row items-center">
+                    <div class="w-20 mr-6 flex item-center justify-center"><div class="w-4 h-4 bg-black" /></div>
+                    <p class="text-xl font-mono font-bold uppercase">{item.title}</p>
+                </div>
+                <div class="w-full flex flex-row items-center">
+                    <div class="w-20 mr-6 self-stretch flex item-center justify-center"><div class="w-1 h-full bg-black" /></div>
+                    <div>
+                        <p class="text-xl font-mono font-light uppercase">{item.start + " TO " + item.end}</p>
+                        <p class="text-xl font-mono font-light uppercase">{item.location}</p>
+                    </div>
+                </div>
+            </div>
+        ))}
+    </div>
+</div>

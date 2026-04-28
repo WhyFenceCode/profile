@@ -1,0 +1,75 @@
+---
+import JobCard from "./JobCard.astro"
+import { Image } from 'astro:assets';
+
+import MacSailingImage from '../images/experience/jobs/mac.jpeg';
+import ChurchillImage from '../images/experience/schools/churchill.png';
+import IBImage from '../images/experience/schools/ib.png';
+import RVYCImage from '../images/experience/jobs/rvyc.png'
+
+const MACExperience = [
+    {
+        "title" : "Intermediate Sailing Instructor",
+        "start" : "January 2026",
+        "end" : "Present",
+        "location" : "Hybrid"
+    },
+    {
+        "title" : "Junior Sailing Instructor",
+        "start" : "June 2025",
+        "end" : "December 2025",
+        "location" : "On Site"
+    }
+];
+
+const ChurchillExperience = [
+    {
+        "title" : "Student",
+        "start" : "September 2024",
+        "end" : "June 2026",
+        "location" : "On Site"
+    },
+    {
+        "title" : "IB Director Volunteer",
+        "start" : "January 2025",
+        "end" : "February 2026",
+        "location" : "Hybrid"
+    },
+    {
+        "title" : "IB Mentor Volunteer",
+        "start" : "February 2025",
+        "end" : "March 2026",
+        "location" : "Hybrid"
+    }
+];
+
+const RVYCExperience = [
+    {
+        "title" : "Junior Sailing Instructor",
+        "start" : "June 2024",
+        "end" : "September 2024",
+        "location" : "On Site"
+    }
+];
+
+---
+<div class="w-full">
+	<div class="flex flex-row justify-center items-center">
+        <div class="w-2/5" />
+		<div class="mx-32 flex flex-col items-end grow">
+            <p class="font-mono text-5xl uppercase font-extrabold mb-6">
+                <span class="text-amber-500">EXPERIENCE AND EDUCATION</span>
+            </p>
+            <JobCard employer="MAC Sailing" type="Seasonal" positions={MACExperience} >
+                <Image src={MacSailingImage} alt="MAC Logo" class="mr-10 h-20 w-20 rounded-lg" />
+            </JobCard>
+            <JobCard employer="Sir Winston Churchill + International Baccalaureate" type="Full Time" positions={ChurchillExperience} >
+                <Image src={ChurchillImage} alt="Churchill Logo" class="mr-10 h-15 w-20 rounded-lg" />
+                <Image src={IBImage} alt="IB Image" class="mr-10 h-20 w-20 rounded-lg" />
+            </JobCard>
+            <JobCard employer="Royal Vancouver Yacht Club" type="Seasonal" positions={RVYCExperience} >
+                <Image src={RVYCImage} alt="RVYC Logo" class="mr-10 h-20 w-20 rounded-lg" />
+            </JobCard>
+        </div>
+	</div>
+</div>
