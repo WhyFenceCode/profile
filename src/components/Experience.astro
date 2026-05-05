@@ -1,11 +1,5 @@
 ---
 import JobCard from "./JobCard.astro"
-import { Image } from 'astro:assets';
-
-import MacSailingImage from '../images/experience/jobs/mac.jpeg';
-import ChurchillImage from '../images/experience/schools/churchill.png';
-import IBImage from '../images/experience/schools/ib.png';
-import RVYCImage from '../images/experience/jobs/rvyc.png'
 
 const MACExperience = [
     {
@@ -27,7 +21,11 @@ const ChurchillExperience = [
         "title" : "Student",
         "start" : "September 2024",
         "end" : "June 2026",
-        "location" : "On Site"
+        "location" : "On Site",
+        "hasDiploma" : true,
+        "diploma" : "International Baccalaureate Diploma",
+        "hasSecondDiploma" : true,
+        "secondDiploma" : "British Columbia Dogwood"
     },
     {
         "title" : "IB Director Volunteer",
@@ -45,9 +43,27 @@ const ChurchillExperience = [
 
 const RVYCExperience = [
     {
+        "title" : "Markset Driver",
+        "start" : "March 2025",
+        "end" : "Present",
+        "location" : "On Site"
+    },
+    {
         "title" : "Junior Sailing Instructor",
         "start" : "June 2024",
         "end" : "September 2024",
+        "location" : "On Site"
+    },
+    {
+        "title" : "Markset Crew",
+        "start" : "March 2023",
+        "end" : "March 2025",
+        "location" : "On Site"
+    },
+    {
+        "title" : "Markset Trainee",
+        "start" : "March 2022",
+        "end" : "March 2023",
         "location" : "On Site"
     }
 ];
@@ -55,21 +71,15 @@ const RVYCExperience = [
 ---
 <div class="w-full">
 	<div class="flex flex-row justify-center items-center">
-        <div class="w-2/5" />
-		<div class="mx-32 flex flex-col items-end grow">
-            <p class="font-mono text-5xl uppercase font-extrabold mb-6">
-                <span class="text-amber-500">EXPERIENCE AND EDUCATION</span>
+		<div class="mx-32 flex flex-col items-start grow">
+            <p class="font-mono text-5xl uppercase font-extrabold mb-4">
+                <span class="text-amber-500">/ EXPERIENCE AND EDUCATION</span>
             </p>
-            <JobCard employer="MAC Sailing" type="Seasonal" positions={MACExperience} >
-                <Image src={MacSailingImage} alt="MAC Logo" class="mr-10 h-20 w-20 rounded-lg" />
-            </JobCard>
-            <JobCard employer="Sir Winston Churchill + International Baccalaureate" type="Full Time" positions={ChurchillExperience} >
-                <Image src={ChurchillImage} alt="Churchill Logo" class="mr-10 h-15 w-20 rounded-lg" />
-                <Image src={IBImage} alt="IB Image" class="mr-10 h-20 w-20 rounded-lg" />
-            </JobCard>
-            <JobCard employer="Royal Vancouver Yacht Club" type="Seasonal" positions={RVYCExperience} >
-                <Image src={RVYCImage} alt="RVYC Logo" class="mr-10 h-20 w-20 rounded-lg" />
-            </JobCard>
+            <JobCard employer="MAC Sailing" type="Seasonal" positions={MACExperience} />
+            <JobCard employer="Sir Winston Churchill + International Baccalaureate" type="Full Time" positions={ChurchillExperience} />
+            <JobCard employer="Royal Vancouver Yacht Club" type="Seasonal" positions={RVYCExperience} />
         </div>
+        <div class="w-2/5" />
 	</div>
+    
 </div>
