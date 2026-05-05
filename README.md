@@ -1,7 +1,7 @@
 # Hi I am Torsten 👋
 
 ```sh
-pnpm created torsten@2008.0.0 -- --template baby
+pnpm created torsten@1.0.0 -- --template baby
 ```
 
 > 🧑‍🚀 **Interested?** Read further, or jump onto my site to learn even more
