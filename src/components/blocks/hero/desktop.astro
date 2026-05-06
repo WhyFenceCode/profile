@@ -1,0 +1,20 @@
+---
+import Stripe from "../../shared/stripe.astro"
+import Tag from "../../shared/tag.astro";
+
+const { class: className } = Astro.props;
+---
+<div class={className}>
+    <div class={`w-full bg-neutral-900`}>
+        <Stripe edge="top"/>
+        <div class="px-48" >
+            <div class="h-14" />
+            <div class="w-fit">
+                <Tag sizeLarge>LOREM IPSUM</Tag>
+                <h1 class="uppercase font-main text-9xl text-amber-400 font-[1000] mt-8 tracking-tight">Torsten</h1>
+                <h1 class="uppercase font-main text-9xl text-neutral-200 font-[1000] tracking-tight">Young</h1>
+
+            </div>
+        </div>
+    </div>
+</div>

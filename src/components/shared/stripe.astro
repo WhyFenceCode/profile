@@ -1,0 +1,19 @@
+---
+interface Props {
+    edge: string;
+}
+
+const { edge } = Astro.props;
+
+
+const UpElementStyle = edge === "top" ? ("w-full h-1 bg-neutral-900") : ("hidden");
+const DownStyleElement = edge === "bottom" ? ("w-full h-1 bg-neutral-900") : ("hidden");
+
+---
+<div class="w-full block w-fit h-fit">
+    <div class={UpElementStyle} />
+    <div class="w-full h-4 bg-amber-400" />
+    <div class={DownStyleElement} />
+</div>
+
+

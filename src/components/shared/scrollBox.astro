@@ -1,11 +1,11 @@
 ---
 ---
 
-<div class="w-dvw h-dvh flex flex-col overflow-y-hidden">
+<div class="w-screen min-h-screen overflow-hidden flex flex-col">
     <div class="w-full">
         <slot name="header" />
     </div>
-    <div class="w-full grow overflow-x-scroll">
+    <main class="w-full flex-1 overflow-auto">
         <slot />
-    </div>
+    </main>
 </div>

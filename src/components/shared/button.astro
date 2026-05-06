@@ -6,10 +6,10 @@ interface Props {
 
 const { href, grow } = Astro.props;
 
-const basicStyle = "bg-amber-400"
+const basicStyle = "bg-amber-400 w-fit"
 
 const ElementStyle = grow === true ? (basicStyle + " grow py-2 flex items-center justify-center") : (basicStyle + " py-2 px-3 flex items-center justify-center");
 ---
 
-<a href={href} class={ElementStyle} ><p class="uppercase text-gray-900 font-[1000] font-main tracking-widest text-sm"><slot /><p></p></a>
+<a href={href} class={ElementStyle} ><p class="uppercase text-neutral-900 font-[1000] font-main tracking-widest text-xs"><slot /><p></p></a>
 

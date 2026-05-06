@@ -5,7 +5,7 @@ interface Props {
 
 const {sizeLarge } = Astro.props;
 
-const basicStyle = "uppercase text-gray-900 bg-amber-400 font-[950] font-main tracking-widest"
+const basicStyle = "uppercase text-neutral-900 bg-amber-400 font-[950] font-main tracking-widest w-fit"
 
 const Element = sizeLarge === true ? 'h2' : 'p';
 const ElementStyle = sizeLarge === true ? (basicStyle + " py-2 px-4 text-sm") : (basicStyle + " py-1 px-3 text-[0.69rem]");

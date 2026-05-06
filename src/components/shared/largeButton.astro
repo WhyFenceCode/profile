@@ -6,10 +6,10 @@ interface Props {
 
 const { href, grow } = Astro.props;
 
-const basicStyle = "bg-amber-400 border-3 border-gray-900 shadow-[5px_5px_0px_0px] hover:shadow-[8px_8px_0px_0px] shadow-gray-900 transition-shadow duration-200"
+const basicStyle = "bg-amber-400 border-3 border-neutral-900 shadow-[5px_5px_0px_0px] hover:shadow-[8px_8px_0px_0px] shadow-neutral-900 transition-shadow duration-200 w-fit"
 
 const ElementStyle = grow === true ? (basicStyle + " grow py-3 flex items-center justify-center") : (basicStyle + " py-4 px-10 flex items-center justify-center");
 ---
 
-<a href={href} class={ElementStyle} ><p class="uppercase text-gray-900 font-[1000] font-main tracking-widest"><slot /><p></p></a>
+<a href={href} class={ElementStyle} ><p class="uppercase text-neutral-900 font-[1000] font-main tracking-widest"><slot /><p></p></a>
 
