@@ -1,0 +1,12 @@
+---
+import Button from "../../shared/button.astro"
+
+const { class: className } = Astro.props;
+---
+
+<div class={`w-full px-4 py-2 bg-gray-900 flex flex-col items-center ${className ?? ''}`}>
+    <p class="text-gray-300 uppercase font-[1000] font-main mr-3 tracking-wide">Interested in my photos?</p>
+    <div class="h-2"/>
+    <Button href="#">tango2november.photos -&gt</Button>
+    <div class="h-1"/>
+</div>

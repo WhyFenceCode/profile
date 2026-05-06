@@ -1,0 +1,26 @@
+---
+import Tag from "../../shared/tag.astro"
+import LargeButton from "../../shared/largeButton.astro"
+
+const { class: className } = Astro.props;
+---
+
+<div class={`w-full h-24 px-4 flex bg-gray-100 border-b-3 border-gray-900 ${className ?? ''}`}>
+    <div class="h-full py-4">
+        <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-full aspect-square">
+            <g clip-path="url(#clip0_191_3)">
+            <path d="M251.706 512C219.88 512 189.357 499.357 166.853 476.853L35.1472 345.147C12.6428 322.643 0 292.12 0 260.294V50C0 22.3858 22.3858 0 50 0H260.294C292.12 0 322.643 12.6428 345.147 35.1472L476.853 166.853C499.357 189.357 512 219.88 512 251.706V462C512 489.614 489.614 512 462 512H251.706Z" fill="#fbbf24"/>
+            <path d="M152.59 347V211.3H110.04V179.1H229.64V211.3H187.09V347H152.59ZM325 347V287.2L276.7 179.1H312.81L333.97 229.7C336.117 234.76 337.957 240.127 339.49 245.8C341.177 251.473 342.327 256.073 342.94 259.6C343.707 256.073 344.78 251.473 346.16 245.8C347.693 240.127 349.457 234.76 351.45 229.7L371.92 179.1H407.8L359.5 287.2V347H325Z" fill="#1B1A1A"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_191_3">
+            <rect width="512" height="512" fill="white"/>
+            </clipPath>
+            </defs>
+        </svg>
+    </div>
+    <div class="grow" />
+    <div class="flex items-center justify-center h-full">
+        <LargeButton href="#">Contact Me</LargeButton>
+    </div>
+</div>
